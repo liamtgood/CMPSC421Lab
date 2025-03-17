@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+//swagger stuff
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json'); // Path to your Swagger JSON file
+
 const app = express();
 const PORT = 3000;
 
@@ -9,15 +13,23 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/orderSystem', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect('mongodb://127.0.0.1:27017/orderSystem');
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+
+
+
+
+
+// Middleware to serve Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+
+
 //customer table
 const customerSchema = new mongoose.Schema({
   first_name: String,
@@ -118,7 +130,11 @@ app.post('/orders/:id/process',async (req,res)=>{
   //
 })
 
+
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Order system is running on port ${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Swagger UI available at http://localhost:${PORT}/api-docs`);
 });
