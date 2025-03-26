@@ -7,13 +7,16 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json'); // Path to your Swagger JSON file
 
 const app = express();
+const host = '0.0.0.0'
 const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://127.0.0.1:27017/orderSystem');
+mongoose.connect('mongodb://localhost:27017/', {
+  dbName: "421"
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
@@ -132,7 +135,7 @@ app.post('/orders/:id/process',async (req,res)=>{
 
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT,host, () => {
   console.log(`Order system is running on port ${PORT}`);
   console.log(`Server running at http://localhost:${PORT}`);
   console.log(`Swagger UI available at http://localhost:${PORT}/api-docs`);
