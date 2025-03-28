@@ -2,6 +2,35 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/item');
 
+/**
+* @swagger
+* components:
+*  schemas:
+*   items:
+*    type: object
+*    properties:
+*     name:
+*      type: string
+*      description: The user's name
+*     description:
+*      type: string
+*      description: Description of user
+*/
+/**
+* @swagger
+* /items:
+*  post:
+*   summary: Create a new user
+*   requestBody:
+*    required: true
+*    content:
+*     application/json:
+*      schema:
+*       $ref: '#/components/schemas/items'
+*   responses:
+*    201:
+*     description: User created
+*/
 // Create a new item
 router.post('/', async (req, res) => {
   try {
@@ -11,6 +40,17 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+/**
+* @swagger
+* /items:
+*  get:
+*   summary: Retrieve a list of users
+*   responses:
+*    200:
+*     description: A list of users
+*/
+
 
 // Get all items
 router.get('/', async (req, res) => {
@@ -22,6 +62,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+* @swagger
+* /items:
+*  patch:
+*   summary: Update user
+*   responses:
+*    200:
+*     description: Update user
+*/
+
+
 // Update an item
 router.patch('/:id', async (req, res) => {
   try {
@@ -31,6 +82,16 @@ router.patch('/:id', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+/**
+* @swagger
+* /items:
+*  delete:
+*   summary: Delete a user
+*   responses:
+*    200:
+*     description: Delete user
+*/
 
 // Delete an item
 router.delete('/:id', async (req, res) => {
