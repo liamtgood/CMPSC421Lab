@@ -9,18 +9,18 @@ const Item = require('../models/item');
 *   items:
 *    type: object
 *    properties:
-*     name:
-*      type: string
+*     products:
+*      type: [string]
 *      description: The user's name
-*     description:
-*      type: string
-*      description: Description of user
+*     status:
+*      type: {type: String, default: 'Pending'}
+*      description: status of order
 */
 /**
 * @swagger
 * /items:
 *  post:
-*   summary: Create a new user
+*   summary: Create a new order
 *   requestBody:
 *    required: true
 *    content:
@@ -29,26 +29,29 @@ const Item = require('../models/item');
 *       $ref: '#/components/schemas/items'
 *   responses:
 *    201:
-*     description: User created
+*     description: order created
 */
-// Create a new item
-router.post('/', async (req, res) => {
+// Create a new order
+router.post('/', async(req, res) => {
   try {
     const newItem = await Item.create(req.body);
-    res.status(201).json(newItem);
+  res.status(201).json(newItem);  
+  
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
+
+
 /**
 * @swagger
 * /items:
 *  get:
-*   summary: Retrieve a list of users
+*   summary: Retrieve a list of orders
 *   responses:
 *    200:
-*     description: A list of users
+*     description: A list of orders
 */
 
 
@@ -61,6 +64,8 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
 
 /**
 * @swagger
@@ -76,7 +81,7 @@ router.get('/', async (req, res) => {
 // Update an item
 router.patch('/:id', async (req, res) => {
   try {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new:true });
     res.json(updatedItem);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -92,12 +97,34 @@ router.patch('/:id', async (req, res) => {
 *    200:
 *     description: Delete user
 */
-
 // Delete an item
 router.delete('/:id', async (req, res) => {
   try {
     await Item.findByIdAndDelete(req.params.id);
     res.json({ message: 'Item deleted' });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+
+
+/**
+* @swagger
+* /items:
+*  put:
+*   summary: cancel a order
+*   responses:
+*    200:
+*     description: cancel a order
+*/
+//cancels order
+router.put('/:id/cancel', async(req, res) => {
+  try{
+    const order = await Item.findById(req.params.id);
+    order.status = 'Cancelled';
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

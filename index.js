@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost/orderSystem', {
+mongoose.connect('mongodb://localhost/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -24,20 +24,21 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
+//swagger connection
 const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'My API',
-      version: '1.0.0',
-      description: 'API documentation using Swagger',
-    },
-    servers: [
-      {
-        url: `http://localhost:${PORT}`,
+    swaggerDefinition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'My API',
+        version: '1.0.0',
+        description: 'API documentation using Swagger',
       },
-    ],
-  components: {
+      servers: [
+        {
+          url: `http://localhost:${PORT}`,
+        },
+      ],
+    components: {
     securitySchemes: {
       bearerAuth: {
         type: 'http',
@@ -45,21 +46,21 @@ const swaggerOptions = {
         bearerFormat: 'JWT',
       },
     },
-  },
-    },
-    apis: ['./routes/*.js'], // Path to your API docs
-   };
+   },
+     },
+      apis: ['./routes/*.js'], // Path to your API docs
+    };
   const swaggerDocs = swaggerJSDoc(swaggerOptions);
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 
 // Middleware to serve Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc));
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc));
 
 
 
-
+/*
 //customer table
 const customerSchema = new mongoose.Schema({
   first_name: String,
@@ -79,19 +80,20 @@ const paymentSchema = new mongoose.Schema({
   orderId: mongoose.Schema.Types.ObjectId,
   Cost: Number,
 
-});
+});*/
 
-const itemSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String }
-  });
+/*const itemSchema = new mongoose.Schema({
+    products:[String],
+    status: {type: String, default: 'Pending'},
+  });*/
 
 //initializes mongoose schema
-const Customer = mongoose.model('Customer', customerSchema);
-const Order = mongoose.model('Order', orderSchema);
-const Payment = mongoose.model('Payment', paymentSchema);
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('Welcome to the API');
+  });
+  
 const itemsRouter = require('./routes/items');
 app.use('/items', itemsRouter);
 
@@ -101,6 +103,7 @@ app.use('/api', userRoutes);
 var customers = [];
 var orders = [];
 
+/*
 //create customer
 app.post('/customers', async(req,res) => {
   const customer = new Customer(req.body);
@@ -148,9 +151,9 @@ app.patch('/orders/:id',async(req,res)=>{
     {new:true}
   );
   res.json(updateOrder);
-})
+})*/
 
-
+/*
 //async operation for proccessing an order
 app.post('/orders/:id/process',async (req,res)=>{
   const orderID = req.params.id;
@@ -164,7 +167,7 @@ app.post('/orders/:id/process',async (req,res)=>{
     await order.save();
 
   },3000);//delay
-})
+})*/
 
 
 
@@ -175,6 +178,6 @@ app.listen(PORT,host, () => {
   console.log(`Swagger UI available at http://localhost:${PORT}/api-docs`);
 });
 
-const Item = mongoose.model('Item',itemSchema);
+//const Item = mongoose.model('Item',itemSchema);
 
-module.exports = Item;
+//module.exports = Item;
