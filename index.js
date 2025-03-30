@@ -14,7 +14,9 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost/mydatabase', {
+//mongodb://localhost/mydatabase', {
+  useNewUrlParser: true,
+mongoose.connect('mongodb://0.0.0.0/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

@@ -71,10 +71,10 @@ router.get('/', async (req, res) => {
 * @swagger
 * /items:
 *  patch:
-*   summary: Update user
+*   summary: Update order
 *   responses:
 *    200:
-*     description: Update user
+*     description: Update order
 */
 
 
@@ -92,10 +92,10 @@ router.patch('/:id', async (req, res) => {
 * @swagger
 * /items:
 *  delete:
-*   summary: Delete a user
+*   summary: Delete an order
 *   responses:
 *    200:
-*     description: Delete user
+*     description: Delete an order
 */
 // Delete an item
 router.delete('/:id', async (req, res) => {
