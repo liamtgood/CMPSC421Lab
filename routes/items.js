@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 
 /**
 * @swagger
-* /items:
+* /items/:id:
 *  patch:
 *   summary: Update order
 *   responses:
@@ -90,7 +90,7 @@ router.patch('/:id', async (req, res) => {
 
 /**
 * @swagger
-* /items:
+* /items/:id:
 *  delete:
 *   summary: Delete an order
 *   responses:
@@ -111,7 +111,7 @@ router.delete('/:id', async (req, res) => {
 
 /**
 * @swagger
-* /items:
+* /items/:id/cancel:
 *  put:
 *   summary: cancel a order
 *   responses:
@@ -129,5 +129,53 @@ router.put('/:id/cancel', async(req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+
+/**
+ * @swagger
+ * /items/:id/process:
+ *  post:
+ *   summary: Process an order
+ *   description: Does the asynchronous process delay for an order
+ *   parameters:
+ *    - in: path
+ *      name: id
+ *      required: true
+ *      schema:
+ *        type: string
+ *      description: id of order needing processing
+ *   responses:
+ *    200:
+ *     description: Order processing started
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        properties:
+ *         message:
+ *          type: string
+ *    404:
+ *     description: Order not found
+ *    500:
+ *     description: Internal server error
+ */
+//async operation for proccessing an order
+router.post('/:id/process',async (req,res)=>{
+  try{
+    const orderID = req.params.id;
+    const order = await Item.findById(orderId);
+
+    res.json({message: 'Processing order'});
+
+    //acynchronus operation process
+    setTimeout(async()=>{
+      order.status = 'processed';
+      await order.save();
+
+    },3000);//delay
+  } catch(err) {
+    res.status(400).json({ message: err.message });
+  }
+})
 
 module.exports = router;
