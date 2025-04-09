@@ -16,12 +16,9 @@ app.use(bodyParser.json());
 // MongoDB Connection
 //mongodb://localhost/mydatabase', {
 //password: Ltg220929$$
-const uri = "mongodb+srv://liamgood83:Ltg220929$$@421lab.cvuv0jp.mongodb.net/?retryWrites=true&w=majority&appName=421Lab";
-
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+//const uri = "mongodb+srv://liamgood83:Ltg220929$$@421lab.cvuv0jp.mongodb.net/?retryWrites=true&w=majority&appName=421Lab";
+const uri = "mongodb://host.docker.internal:27017/mydatabase";
+mongoose.connect(uri);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {

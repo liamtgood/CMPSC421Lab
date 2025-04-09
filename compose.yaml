@@ -15,6 +15,7 @@ services:
       NODE_ENV: production
     ports:
       - 4000:3000
+    image: cmpsc421lab-server:latest
 
 
 # The commented out section below is an example of how to define a PostgreSQL
