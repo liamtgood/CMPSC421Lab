@@ -8,7 +8,7 @@ const swaggerJSDoc = require('swagger-jsdoc'); // Path to your Swagger JSON file
 
 const app = express();
 const host = '0.0.0.0'
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
