@@ -24,30 +24,53 @@ services:
 # database data between container restarts. The `db-password` secret is used
 # to set the database password. You must create `db/password.txt` and add
 # a password of your choosing to it before running `docker-compose up`.
-#     depends_on:
-#       db:
-#         condition: service_healthy
-#   db:
-#     image: postgres
-#     restart: always
-#     user: postgres
-#     secrets:
-#       - db-password
-#     volumes:
-#       - db-data:/var/lib/postgresql/data
-#     environment:
-#       - POSTGRES_DB=example
-#       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-#     expose:
-#       - 5432
-#     healthcheck:
-#       test: [ "CMD", "pg_isready" ]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 5
-# volumes:
-#   db-data:
-# secrets:
-#   db-password:
-#     file: db/password.txt
+    #depends_on:
+    #  db:
+    #    condition: service_healthy
+  mongodb:
+    image: cmpsc421lab-server:latest
+    restart: always
+    volumes:
+    - mongodata:/data/db
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - node-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: examplepassword
+volumes:
+  mongodata:
+    driver: local
+networks:
+  node-network:
+    driver: bridge
+
+
+#    user: postgres
+#    secrets:
+#      - db-password
+#    volumes:
+#      - db-data:/var/lib/postgresql/data
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME = 
+#      - POSTGRES_DB=example
+#      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+#    expose:
+#      - 5432
+#    healthcheck:
+#      test: [ "CMD", "pg_isready" ]
+#      interval: 10s
+#      timeout: 5s
+#     retries: 5
+#volumes:
+#  db-data:
+#secrets:
+#  db-password:
+#    file: db/password.txt
 
