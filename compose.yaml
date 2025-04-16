@@ -44,7 +44,7 @@ services:
     networks:
       - node-network
     environment:
-      DATABASE_URL: mongodb://host.docker.internal:27017/mydatabase
+      DATABASE_URL: mongodb://root:examplepassword@mongodb:27017/mydatabase
 
 
 volumes:
