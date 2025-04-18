@@ -13,12 +13,17 @@ services:
       context: .
     environment:
       NODE_ENV: production
+      PORT: 4000
+      MONGODB_URI: mongodb://mongodb:27017/mydatabase
     ports:
       - 4000:3000
-    image: cmpsc421lab-server:latest
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    # image: cmpsc421lab-server:latest
 
   mongodb:
-    image: cmpsc421lab-server:latest
+    image: mongo:latest
     restart: always
     volumes:
     - mongodata:/data/db
@@ -35,16 +40,16 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: examplepassword
 
-  app:
-    image: liamtgood/cmpsc421lab-server:latest
-    depends_on:
-      - mongodb
-    ports:
-     - 8080:3000
-    networks:
-      - node-network
-    environment:
-      DATABASE_URL: mongodb://root:examplepassword@mongodb:27017/mydatabase
+  # app:
+  #   image: liamtgood/cmpsc421lab-server:latest
+  #   depends_on:
+  #     - mongodb
+  #   ports:
+  #    - 8080:3000
+  #   networks:
+  #     - node-network
+  #   environment:
+  #     DATABASE_URL: mongodb://root:examplepassword@mongodb:27017/mydatabase
 
 
 volumes:
