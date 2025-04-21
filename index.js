@@ -8,25 +8,21 @@ const swaggerJSDoc = require('swagger-jsdoc'); // Path to your Swagger JSON file
 
 const app = express();
 const host = '0.0.0.0'
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
 
 // MongoDB Connection
-const dbUsername = process.env.MONGO_INITDB_ROOT_USERNAME || 'root';
-const dbPassword = process.env.MONGO_INITDB_ROOT_PASSWORD || 'examplepassword';
-const dbHost = process.env.MONGO_HOST || 'mongodb';
-const dbPort = process.env.MONGO_PORT || '27017';
-const dbName = process.env.MONGO_DB_NAME || 'mydatabase';
 //mongodb://localhost/mydatabase', {
 //password: Ltg220929$$
 //const uri = "mongodb+srv://liamgood83:Ltg220929$$@421lab.cvuv0jp.mongodb.net/?retryWrites=true&w=majority&appName=421Lab";
-const uri = "mongodb://host.docker.internal:27017/mydatabase";
-
+//const uri = "mongodb://host.docker.internal:27017/mydatabase";
+const uri = "mongodb://mongodb:27017/"
+//"mongodb://mongodb:27017/"
 async function connectToMongoDB() {
   try {
-    mongoose.connect("mongodb://mongodb:27017/", {
+    mongoose.connect(uri, {
       dbName: 'mydatabase',
     });
     const db = mongoose.connection;
@@ -57,7 +53,7 @@ const swaggerOptions = {
     components: {
     securitySchemes: {
       bearerAuth: {
-        type: 'http',
+        type: 'http', 
         scheme: 'bearer',
         bearerFormat: 'JWT',
       },
